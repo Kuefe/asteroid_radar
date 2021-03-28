@@ -24,21 +24,27 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
      */
     suspend fun refreshAsteriods() {
         withContext(Dispatchers.IO) {
-            val asteroidList =
-                parseAsteroidsJsonResult(JSONObject(AsteroidApi.retrofitService.getAsteroids()))
-            val networkAsteroidList = asteroidList.map {
-                NetworkAsteroid(
-                    it.id,
-                    it.codename,
-                    it.closeApproachDate,
-                    it.absoluteMagnitude,
-                    it.estimatedDiameter,
-                    it.relativeVelocity,
-                    it.distanceFromEarth,
-                    it.isPotentiallyHazardous
+            try {
+                val asteroidList =
+                    parseAsteroidsJsonResult(JSONObject(AsteroidApi.retrofitService.getAsteroids()))
+                val networkAsteroidList = asteroidList.map {
+                    NetworkAsteroid(
+                        it.id,
+                        it.codename,
+                        it.closeApproachDate,
+                        it.absoluteMagnitude,
+                        it.estimatedDiameter,
+                        it.relativeVelocity,
+                        it.distanceFromEarth,
+                        it.isPotentiallyHazardous
+                    )
+                }
+                database.asteroidDao.insertAll(
+                    *networkAsteroidList.asDatabaseModel().toTypedArray()
                 )
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            database.asteroidDao.insertAll(*networkAsteroidList.asDatabaseModel().toTypedArray())
         }
     }
 }

@@ -14,7 +14,8 @@ import com.udacity.asteroidradar.models.Asteroid
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
  * data, including computing diffs between lists.
  */
-class MainAdapter : ListAdapter<Asteroid, MainAdapter.AsteroidViewHolder>(DiffCallback) {
+class MainAdapter(val onClickListener: OnClickListener) :
+    ListAdapter<Asteroid, MainAdapter.AsteroidViewHolder>(DiffCallback) {
     object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return newItem == newItem
@@ -42,13 +43,36 @@ class MainAdapter : ListAdapter<Asteroid, MainAdapter.AsteroidViewHolder>(DiffCa
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidViewHolder {
-        return AsteroidViewHolder(ListViewItemBinding.inflate(LayoutInflater.from(parent.context)))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MainAdapter.AsteroidViewHolder {
+        return AsteroidViewHolder(
+            ListViewItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
         val asteroid = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(asteroid)
+        }
         holder.bind(asteroid)
     }
+
+    /**
+     * Custom listener that handles clicks on [RecyclerView] items.  Passes the [Asteroid]
+     * associated with the current item to the [onClick] function.
+     * @param clickListener lambda that will be called with the current [Asteroid]
+     */
+    class OnClickListener(val clickListener: (asteroid: Asteroid) -> Unit) {
+        fun onClick(asteroid: Asteroid) = clickListener(asteroid)
+    }
+
+
 
 }
