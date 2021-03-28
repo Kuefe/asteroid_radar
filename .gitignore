@@ -10,6 +10,7 @@
 /build
 /captures
 .externalNativeBuild
+api_key.txt
 
 
 # gradle
