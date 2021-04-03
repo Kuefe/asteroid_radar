@@ -10,7 +10,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class AsteroidRadarApplication: Application() {
+/**
+ * Override application to setup background work via WorkManager
+ */
+class AsteroidRadarApplication : Application() {
 
     val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -31,15 +34,16 @@ class AsteroidRadarApplication: Application() {
                 }
             }.build()
 
-        val repeatingRequest
-                = PeriodicWorkRequestBuilder<RefreshDataWorker>(1, TimeUnit.DAYS)
-            .setConstraints(constraints)
-            .build()
+        val repeatingRequest =
+            PeriodicWorkRequestBuilder<RefreshDataWorker>(1, TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .build()
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             RefreshDataWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
-            repeatingRequest)
+            repeatingRequest
+        )
     }
 
     /**
