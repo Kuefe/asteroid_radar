@@ -12,9 +12,9 @@ import retrofit2.http.GET
  * object pointing to the desired URL
  */
 private val retrofit = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .baseUrl(BASE_URL)
-        .build()
+    .addConverterFactory(ScalarsConverterFactory.create())
+    .baseUrl(BASE_URL)
+    .build()
 
 /**
  * A public interface that exposes the [getAsteroids] method

@@ -22,6 +22,8 @@
             android:layout_height="wrap_content"
             android:text="@{String.valueOf(asteroid.id)}"
             android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="56656565" />
@@ -32,6 +34,8 @@
             android:layout_height="wrap_content"
             android:text="@{asteroid.codename}"
             android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/id_text"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="codename" />
@@ -42,6 +46,7 @@
             android:layout_height="wrap_content"
             android:text="@{asteroid.closeApproachDate}"
             android:textColor="@android:color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/id_text"

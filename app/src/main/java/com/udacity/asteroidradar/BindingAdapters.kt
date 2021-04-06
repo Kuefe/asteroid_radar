@@ -2,17 +2,22 @@ package com.udacity.asteroidradar
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.udacity.asteroidradar.main.AsteroidApiStatus
+import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.main.AsteroidLoadStaus
 import com.udacity.asteroidradar.main.MainAdapter
 import com.udacity.asteroidradar.models.Asteroid
 
 @BindingAdapter("listdata")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as MainAdapter
-    adapter.submitList(data)
+    adapter.submitList(data) {
+        recyclerView.scrollToPosition(0)
+    }
 }
 
 @BindingAdapter("statusIcon")
@@ -30,6 +35,18 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+    }
+}
+
+@BindingAdapter("imageOfTheDay")
+fun bindImage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        Picasso
+            .with(imgView.context)
+            .load(imgUri)
+            .placeholder(R.drawable.placeholder_picture_of_day)
+            .into(imgView)
     }
 }
 
@@ -51,19 +68,18 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 
-@BindingAdapter("asteroidApiStatus")
-fun bindStatus(statusImageView: ImageView, status: AsteroidApiStatus?) {
+
+@BindingAdapter("progressbar")
+fun bindStatus(progressbar: ProgressBar, status: AsteroidLoadStaus?) {
     when (status) {
-        AsteroidApiStatus.LOADING -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.loading_animation)
+        AsteroidLoadStaus.LOADING -> {
+            progressbar.visibility = View.VISIBLE
         }
-        AsteroidApiStatus.ERROR -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.ic_connection_error)
+        AsteroidLoadStaus.DONE -> {
+            progressbar.visibility = View.GONE
         }
-        AsteroidApiStatus.DONE -> {
-            statusImageView.visibility = View.GONE
+        AsteroidLoadStaus.ERROR -> {
+            progressbar.visibility = View.VISIBLE
         }
     }
 }

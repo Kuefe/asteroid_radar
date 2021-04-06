@@ -2,10 +2,12 @@ package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.ListViewItemBinding
 import com.udacity.asteroidradar.models.Asteroid
 
@@ -16,6 +18,40 @@ import com.udacity.asteroidradar.models.Asteroid
  */
 class MainAdapter(val onClickListener: OnClickListener) :
     ListAdapter<Asteroid, MainAdapter.AsteroidViewHolder>(DiffCallback) {
+
+    /**
+     * The AsteroidViewHolder constructor takes the binding variable from the associated
+     * ListViewItem, which nicely gives it access to the full [Asteroid] information.
+     */
+    class AsteroidViewHolder(private var binding: ListViewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(asteroid: Asteroid) {
+            binding.asteroid = asteroid
+            // This is important, because it forces the data binding to execute immediately,
+            // which allows the RecyclerView to make the correct view size measurements
+            binding.executePendingBindings()
+        }
+
+    }
+
+    override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
+
+        val item = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(item)
+        }
+        holder.bind(item)
+    }
+
+    /**
+     * Create new [RecyclerView] item views (invoked by the layout manager)
+     */
+    override fun onCreateViewHolder(parent: ViewGroup,
+                                    viewType: Int): AsteroidViewHolder {
+        return AsteroidViewHolder(ListViewItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    }
+
+
     object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return newItem == newItem
@@ -27,42 +63,6 @@ class MainAdapter(val onClickListener: OnClickListener) :
 
     }
 
-    /**
-     * ViewHolder that holds a single [TextView].
-     *
-     * A ViewHolder holds a view for the [RecyclerView] as well as providing additional information
-     * to the RecyclerView such as where on the screen it was last drawn during scrolling.
-     */
-    class AsteroidViewHolder(private var binding: ListViewItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(asteroid: Asteroid) {
-            binding.asteroid = asteroid
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
-            binding.executePendingBindings()
-        }
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MainAdapter.AsteroidViewHolder {
-        return AsteroidViewHolder(
-            ListViewItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
-        val asteroid = getItem(position)
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(asteroid)
-        }
-        holder.bind(asteroid)
-    }
 
     /**
      * Custom listener that handles clicks on [RecyclerView] items.  Passes the [Asteroid]
@@ -72,7 +72,4 @@ class MainAdapter(val onClickListener: OnClickListener) :
     class OnClickListener(val clickListener: (asteroid: Asteroid) -> Unit) {
         fun onClick(asteroid: Asteroid) = clickListener(asteroid)
     }
-
-
-
 }
