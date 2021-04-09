@@ -16,39 +16,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
         <TextView
             android:id="@+id/id_text"
+            style="@style/TextAppearance.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{String.valueOf(asteroid.id)}"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_grid"
+            app:layout_constraintTop_toTopOf="@id/top_grid"
             tools:text="56656565" />
 
         <TextView
             android:id="@+id/codename_text"
+            style="@style/TextAppearance.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{asteroid.codename}"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/id_text"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/top_grid"
             tools:text="codename" />
 
         <TextView
             android:id="@+id/closeApproachDate_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{asteroid.closeApproachDate}"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+             android:text="@{asteroid.closeApproachDate}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_grid"
+            app:layout_constraintLeft_toLeftOf="@+id/start_grid"
             app:layout_constraintTop_toBottomOf="@+id/id_text"
             tools:text="closeApproachDate" />
 
@@ -57,10 +54,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/end_grid"
+            app:layout_constraintTop_toTopOf="@id/top_grid"
             app:statusIcon="@{asteroid.potentiallyHazardous}"
             tools:srcCompat="@drawable/ic_status_normal" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/spacing_normal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/spacing_normal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/spacing_normal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/spacing_normal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

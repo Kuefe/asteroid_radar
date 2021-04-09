@@ -1,9 +1,7 @@
 package com.udacity.asteroidradar.database
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.udacity.asteroidradar.models.Asteroid
 
 @Dao
 interface AsteroidDao {
@@ -12,6 +10,9 @@ interface AsteroidDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroids: DatabaseAsteroid)
+
+    @Delete
+    fun deleteYesterday(asteroids: List<DatabaseAsteroid>)
 }
 
 @Database(entities = [DatabaseAsteroid::class], version = 1)

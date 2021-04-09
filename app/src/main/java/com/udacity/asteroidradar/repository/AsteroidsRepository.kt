@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.repository
 
+import android.util.Log
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.DatabaseAsteroid
 import com.udacity.asteroidradar.models.Asteroid
@@ -40,11 +41,25 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
         }
     }
 
+    /**
+     * get a List of asteroids from the database an transform then to a domain object
+     */
     suspend fun getAsteroidList(startDate: String, endDate: String): List<Asteroid> {
         return withContext(Dispatchers.IO) {
             val asteroidList: List<DatabaseAsteroid> =
                 database.asteroidDao.getAsteroids(startDate, endDate)
             asteroidList.asDomainModel()
+        }
+    }
+
+    /**
+     * delete the Asteroids from yesterday
+     */
+    suspend fun delteAsteroids(deleteDate: String) {
+        withContext(Dispatchers.IO) {
+            val asteroidList: List<DatabaseAsteroid> =
+                database.asteroidDao.getAsteroids(deleteDate, deleteDate)
+            database.asteroidDao.deleteYesterday(asteroidList)
         }
     }
 }

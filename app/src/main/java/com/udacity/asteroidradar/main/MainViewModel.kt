@@ -49,25 +49,34 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = _asteroids
 
 
-    fun updateFilter(filter: AsteroidFilter) {
+    // Refresh the asteroids using the repository
+    init {
+        val filter = AsteroidFilter.SAVED
+        _status.value = AsteroidLoadStaus.LOADING
         viewModelScope.launch {
-            _status.value = AsteroidLoadStaus.LOADING
             try {
                 asteroidsRepository.refreshAsteriods()
                 _asteroids.value =
                     asteroidsRepository.getAsteroidList(getToday(), getEndDate(filter))
+                _imageOfTheDay.value = ImageOfTheDayApi.retrofitService.getImageOfTheDay()
                 _status.value = AsteroidLoadStaus.DONE
-            } catch (e: Exception) {
+            } catch (e: java.lang.Exception) {
                 _asteroids.value = ArrayList()
                 _status.value = AsteroidLoadStaus.ERROR
             }
         }
     }
 
-    // Refresh the asteroids using the repository
-    init {
-        getImageOfTheDay()
-        updateFilter(AsteroidFilter.SAVED)
+    // Display the database asterids
+    fun updateFilter(filter: AsteroidFilter) {
+        viewModelScope.launch {
+            try {
+                _asteroids.value =
+                    asteroidsRepository.getAsteroidList(getToday(), getEndDate(filter))
+            } catch (e: Exception) {
+                _asteroids.value = ArrayList()
+            }
+        }
     }
 
     /**
@@ -86,12 +95,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
+    /**
+     * return today as a string
+     * calculate the startdate of the filter
+     */
     fun getToday(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
 
+    /**
+     * calculate the date for the filter
+     * Week-Filter: Sunday until Saturday
+     * saved-filter: from today the next seven days
+     */
     fun getEndDate(filter: AsteroidFilter): String {
         val calendar = Calendar.getInstance()
         if (filter == AsteroidFilter.SAVED) {
@@ -104,6 +122,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return dateFormat.format(calendar.time)
     }
 
+    /**
+     * Livedata für the Image of the day
+     */
     private val _imageOfTheDay = MutableLiveData<PictureOfDay>()
 
     val imageOfTheDay: LiveData<PictureOfDay>
