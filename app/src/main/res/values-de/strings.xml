@@ -17,6 +17,4 @@
     <string name="astronomical_unit_explanation_button">Definition der astronomischen Einheit</string>
     <string name="potentially_hazardous_asteroid_image">Bild eines potenziell gefährlichen Asteroiden</string>
     <string name="not_hazardous_asteroid_image">Bild eines nicht gefährliches Asteroiden</string>
-    <string name="this_is_nasa_s_picture_of_day_showing_nothing_yet">Dies ist das Bild des Tages der NASA, das noch nichts zeigt</string>
-    <string name="nasa_picture_of_day_content_description_format">Bild des Tages der NASA: %s</string>
 </resources>

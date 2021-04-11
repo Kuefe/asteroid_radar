@@ -46,7 +46,7 @@ class MainFragment : Fragment() {
         // Observe the navigateToSelectedProperty LiveData and Navigate when it isn't null
         // After navigating, call displayPropertyDetailsComplete() so that the ViewModel is ready
         // for another navigation event.
-        viewModel.navigateToSelectedAsteroid.observe(this, Observer {
+        viewModel.navigateToSelectedAsteroid.observe(viewLifecycleOwner, Observer {
             if (null != it) {
                 // Must find the NavController from the Fragment
                 this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))

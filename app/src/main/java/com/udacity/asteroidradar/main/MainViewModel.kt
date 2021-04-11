@@ -48,6 +48,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val asteroids: LiveData<List<Asteroid>>
         get() = _asteroids
 
+    /**
+     * Livedata für the Image of the day
+     */
+    private val _imageOfTheDay = MutableLiveData<PictureOfDay>()
+
+    val imageOfTheDay: LiveData<PictureOfDay>
+        get() = _imageOfTheDay
 
     // Refresh the asteroids using the repository
     init {
@@ -65,6 +72,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _status.value = AsteroidLoadStaus.ERROR
             }
         }
+
     }
 
     // Display the database asterids
@@ -121,30 +129,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
-
-    /**
-     * Livedata für the Image of the day
-     */
-    private val _imageOfTheDay = MutableLiveData<PictureOfDay>()
-
-    val imageOfTheDay: LiveData<PictureOfDay>
-        get() = _imageOfTheDay
-
-    /**
-     * Sets the value of the response LiveData to the Mars API status or the successful number of
-     * Mars properties retrieved.
-     */
-    private fun getImageOfTheDay() {
-        viewModelScope.launch {
-
-            try {
-                var listResult = ImageOfTheDayApi.retrofitService.getImageOfTheDay()
-                _imageOfTheDay.value = listResult
-            } catch (e: Exception) {
-                Log.i("MainViewModel", "no image of the day")
-            }
-        }
-    }
-
-
 }

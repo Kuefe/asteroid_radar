@@ -19,7 +19,7 @@ class DetailFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        val asteroid = DetailFragmentArgs.fromBundle(arguments!!).selectedAsteroid
+        val asteroid = DetailFragmentArgs.fromBundle(requireArguments()).selectedAsteroid
         val viewModelFactory = DetailViewModelFactory(asteroid, application)
         binding.viewModel = ViewModelProvider(
             this, viewModelFactory).get(DetailViewModel::class.java)
@@ -32,7 +32,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun displayAstronomicalUnitExplanationDialog() {
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(requireActivity())
             .setMessage(getString(R.string.astronomica_unit_explanation))
             .setPositiveButton(android.R.string.ok, null)
         builder.create().show()

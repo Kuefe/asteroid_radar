@@ -55,7 +55,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
     /**
      * delete the Asteroids from yesterday
      */
-    suspend fun delteAsteroids(deleteDate: String) {
+    suspend fun deleteAsteroids(deleteDate: String) {
         withContext(Dispatchers.IO) {
             val asteroidList: List<DatabaseAsteroid> =
                 database.asteroidDao.getAsteroids(deleteDate, deleteDate)

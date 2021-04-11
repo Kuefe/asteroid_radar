@@ -17,14 +17,13 @@
         android:layout_height="wrap_content">
 
 
-
         <TextView
             android:id="@+id/id_text"
             style="@style/TextAppearance.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{String.valueOf(asteroid.id)}"
-            app:layout_constraintStart_toStartOf="@+id/start_grid"
+            app:layout_constraintStart_toEndOf="@+id/start_grid"
             app:layout_constraintTop_toTopOf="@id/top_grid"
             tools:text="56656565" />
 
@@ -34,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{asteroid.codename}"
-            app:layout_constraintLeft_toRightOf="@+id/id_text"
+            app:layout_constraintStart_toEndOf="@+id/id_text"
             app:layout_constraintTop_toTopOf="@id/top_grid"
             tools:text="codename" />
 
@@ -42,10 +41,10 @@
             android:id="@+id/closeApproachDate_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             android:text="@{asteroid.closeApproachDate}"
+            android:text="@{asteroid.closeApproachDate}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintBottom_toBottomOf="@id/bottom_grid"
-            app:layout_constraintLeft_toLeftOf="@+id/start_grid"
+            app:layout_constraintStart_toStartOf="@+id/start_grid"
             app:layout_constraintTop_toBottomOf="@+id/id_text"
             tools:text="closeApproachDate" />
 
@@ -53,6 +52,7 @@
             android:id="@+id/isPotentiallyHazardous_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/potentially_hazardous_asteroid_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/end_grid"
             app:layout_constraintTop_toTopOf="@id/top_grid"
