@@ -31,6 +31,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:contentDescription="@{viewModel.imageOfTheDay.title}"
                 app:imageOfTheDay="@{viewModel.imageOfTheDay.url}" />
 
             <TextView
