@@ -27,5 +27,5 @@ Show the asteroids from today
 ### View saved asteroids
 Show the asteroids of the next 7 days
 
-### image of the day
+## Image of the day
 It will display R.drawable.placeholder_picture_of_day if the mediatype = video
